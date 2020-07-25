@@ -1,0 +1,38 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf610
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fnil\fcharset0 HelveticaNeue;\f2\fnil\fcharset0 Menlo-Regular;
+}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 Otema Yirenkyi   25 Jul 2020\
+\
+PostgreSQL Challenge - Using Command line prompt in MacOS\
+\
+Queries to create before answering main questions\
+\
+Use Create Table queries provided in question\
+\
+Import from CSV, tables created [for each table data]\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f1 \cf0 \\COPY wallets(wallet_id,currency,ledger_location,when_created) FROM '/Users/otemayirenkyi/Downloads/wallets.csv' CSV HEADER DELIMITER ',';
+\f0 \
+\
+\
+Questions\
+\
+ 
+\f2\fs22 1. SELECT COUNT(u_id) FROM USERS;\
+\
+2. SELECT COUNT (send_amount_currency) FROM TRANSFERS WHERE send_amount_currency='CFA' ;\
+\
+3. SELECT COUNT(u_id) FROM TRANSFERS WHERE send_amount_currency='CFA' ;\
+\
+4. SELECT *FROM agent_transactions WHERE when_created BETWEEN \'912018-01-01\'92 AND \'912018-12-01\'92 ORDER BY when_created;\
+\
+5. CREATE TABLE net_transfers AS (SELECT agent_transactions.agent_id, agent_transactions.amount,transfers.receive_amount_scalar, transfers.when_created FROM agent_transactions FULL OUTER JOIN transfers ON agent_transactions.agent_id = transfers.dest_merchant_id WHERE transfers.when_created BETWEEN '2020-06-20' AND '2020-06-28' AND transfers.kind='AGENT');\
+\
+}
