@@ -1,77 +1,66 @@
-{\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf610
-{\fonttbl\f0\fnil\fcharset0 HelveticaNeue;}
-{\colortbl;\red255\green255\blue255;\red53\green53\blue53;}
-{\*\expandedcolortbl;;\cssrgb\c27059\c27059\c27059;}
-\paperw11900\paperh16840\margl1440\margr1440\vieww10800\viewh8400\viewkind0
-\deftab560
-\pard\pardeftab560\slleading20\partightenfactor0
+ 
+Otema Yirenkyi   25 Jul 2020
 
-\f0\fs24 \cf2 Otema Yirenkyi   25 Jul 2020\
-\
-PostgreSQL Challenge - Using Command line prompt in MacOS\
-\
-Queries to create before answering main questions\
-\
-Use Create Table queries provided in question\
-\
-Import from CSV, tables created [for each table data]\
-\
-\\COPY wallets(wallet_id,currency,ledger_location,when_created) FROM '/Users/otemayirenkyi/Downloads/wallets.csv' CSV HEADER DELIMITER ',';\
-\
-Questions\
-\
- \
- 1. SELECT COUNT(u_id) FROM USERS;\
-\
-2. SELECT COUNT (send_amount_currency) FROM TRANSFERS WHERE send_amount_currency='CFA' ;\
-\
-3. SELECT COUNT(u_id) FROM TRANSFERS WHERE send_amount_currency='CFA' ;\
-\
-4. SELECT *FROM agent_transactions WHERE when_created BETWEEN \'912018-01-01\'92 AND \'912018-12-01\'92 ORDER BY when_created;\
-\
-\pard\pardeftab560\slleading20\partightenfactor0
-\cf2 (For the next couple of questions we are assuming that the past week falls between 20th and 28th June as per the data)\cf2 \
-\
-5. CREATE TABLE net_transfers AS (SELECT agent_transactions.agent_id, agent_transactions.amount,transfers.receive_amount_scalar, transfers.when_created FROM agent_transactions FULL OUTER JOIN transfers ON agent_transactions.agent_id = transfers.dest_merchant_id WHERE transfers.when_created BETWEEN '2020-06-20' AND '2020-06-28' AND transfers.kind='AGENT');\
-\
-\pard\tx566\pardeftab560\pardirnatural\partightenfactor0
-\cf2 \
-\pard\pardeftab560\slleading20\partightenfactor0
-\cf2 SELECT City, Volume\
-INTO atx_volume_city_summary \
-FROM ( Select agents.city AS City, count(agent_transactions.atx_id) AS Volume FROM agents \
-INNER JOIN agent_transactions \
-ON agents.agent_id = agent_transactions.agent_id\
-where (agent_transactions.when_created BETWEEN '2020-06-21' AND '2020-06-28')\
-GROUP BY agents.city) as atx_volume_summary; \
-\
-\
-7.\
-SELECT COUNT(atx_id) AS volume,city,country\
-FROM public.agent_transactions\
-INNER JOIN agents ON agents.agent_id = agent_transactions.agent_id\
-WHERE agent_transactions.when_created BETWEEN '2020-06-21' AND '2020-06-28'\
-GROUP BY city, country; \
- \
-8.\
-CREATE TABLE send_volume_by_country_and_kind AS\
-SELECT SUM(transfers.send_amount_scalar), wallets.ledger_location, array_agg(transfers.kind) \
-FROM transfers\
-LEFT OUTER JOIN wallets ON transfers.source_wallet_id = wallets.wallet_id\
-WHERE transfers.when_created BETWEEN'2020-06-21' AND '2020-06-28'\
-GROUP BY wallets.ledger_location;\
-\
-9.\
-CREATE TABLE transaction_by_country_and_kind AS\
-SELECT COUNT (transfers.transfer_id), wallets.ledger_location, array_agg(transfers.kind) \
-FROM transfers\
-LEFT OUTER JOIN wallets ON transfers.source_wallet_id = wallets.wallet_id\
-WHERE transfers.when_created BETWEEN'2020-06-21' AND '2020-06-28'\
-GROUP BY wallets.ledger_location;\
-\
-\
-10.\
-SELECT source_wallet_id, send_amount_scalar FROM transfers WHERE send_amount_currency = 'CFA'\
-AND send_amount_scalar > 10000000 AND when_created > now()-interval '1 month'\
-\
-}
+PostgreSQL Challenge - Using Command line prompt in MacOS
+
+Queries to create before answering main questions
+
+Use Create Table queries provided in question
+
+Import from CSV, tables created [for each table data]
+
+\COPY wallets(wallet_id,currency,ledger_location,when_created) FROM '/Users/otemayirenkyi/Downloads/wallets.csv' CSV HEADER DELIMITER ',';
+
+Questions
+
+ 
+ 1. SELECT COUNT(u_id) FROM USERS;
+
+2. SELECT COUNT (send_amount_currency) FROM TRANSFERS WHERE send_amount_currency='CFA' ;
+
+3. SELECT COUNT(u_id) FROM TRANSFERS WHERE send_amount_currency='CFA' ;
+
+4. SELECT *FROM agent_transactions WHERE when_created BETWEEN ‘2018-01-01’ AND ‘2018-12-01’ ORDER BY when_created;
+
+5. CREATE TABLE net_transfers AS (SELECT agent_transactions.agent_id, agent_transactions.amount,transfers.receive_amount_scalar, transfers.when_created FROM agent_transactions FULL OUTER JOIN transfers ON agent_transactions.agent_id = transfers.dest_merchant_id WHERE transfers.when_created BETWEEN '2020-06-20' AND '2020-06-28' AND transfers.kind='AGENT');
+
+
+(For the next couple of questions we are assuming that the past week falls between 21st and 28th June as per the data)
+
+6. 
+SELECT City, Volume
+INTO atx_volume_city_summary 
+FROM ( Select agents.city AS City, count(agent_transactions.atx_id) AS Volume FROM agents 
+INNER JOIN agent_transactions 
+ON agents.agent_id = agent_transactions.agent_id
+where (agent_transactions.when_created BETWEEN '2020-06-21' AND '2020-06-28')
+GROUP BY agents.city) as atx_volume_summary; 
+
+
+7.
+SELECT COUNT(atx_id) AS volume,city,country
+FROM public.agent_transactions
+INNER JOIN agents ON agents.agent_id = agent_transactions.agent_id
+WHERE agent_transactions.when_created BETWEEN '2020-06-21' AND '2020-06-28'
+GROUP BY city, country; 
+ 
+8.
+CREATE TABLE send_volume_by_country_and_kind AS
+SELECT SUM(transfers.send_amount_scalar), wallets.ledger_location, array_agg(transfers.kind) 
+FROM transfers
+LEFT OUTER JOIN wallets ON transfers.source_wallet_id = wallets.wallet_id
+WHERE transfers.when_created BETWEEN'2020-06-21' AND '2020-06-28'
+GROUP BY wallets.ledger_location;
+
+9.
+CREATE TABLE transaction_by_country_and_kind AS
+SELECT COUNT (transfers.transfer_id), wallets.ledger_location, array_agg(transfers.kind) 
+FROM transfers
+LEFT OUTER JOIN wallets ON transfers.source_wallet_id = wallets.wallet_id
+WHERE transfers.when_created BETWEEN'2020-06-21' AND '2020-06-28'
+GROUP BY wallets.ledger_location;
+
+
+10.
+SELECT source_wallet_id, send_amount_scalar FROM transfers WHERE send_amount_currency = 'CFA'
+AND send_amount_scalar > 10000000 AND when_created > now()-interval '1 month’;
