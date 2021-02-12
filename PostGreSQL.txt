@@ -11,7 +11,8 @@ Import from CSV, tables created [for each table data]
 
 \COPY wallets(wallet_id,currency,ledger_location,when_created) FROM '/Users/otemayirenkyi/Downloads/wallets.csv' CSV HEADER DELIMITER ',';
 
-Questions
+
+Answers to  questions to help understand WAVE business
 
  
  1. SELECT COUNT(u_id) FROM USERS;
@@ -25,7 +26,7 @@ Questions
 5. CREATE TABLE net_transfers AS (SELECT agent_transactions.agent_id, agent_transactions.amount,transfers.receive_amount_scalar, transfers.when_created FROM agent_transactions FULL OUTER JOIN transfers ON agent_transactions.agent_id = transfers.dest_merchant_id WHERE transfers.when_created BETWEEN '2020-06-20' AND '2020-06-28' AND transfers.kind='AGENT');
 
 
-(For the next couple of questions we are assuming that the past week falls between 21st and 28th June as per the data)
+(For the next couple of queries we are assuming that the past week falls between 21st and 28th June as per the data)
 
 6. 
 SELECT City, Volume
